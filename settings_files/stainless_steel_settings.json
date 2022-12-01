@@ -1,0 +1,11 @@
+  {
+  "plot settings": {
+    "material": "Stainless Steel",
+    "stress conversion factor": "21",
+    "csv_file_path": "Datasets/stainless_steel.csv",
+    "num frames per": "1",
+    "frames directory": "Animation Frames/Stainless Steel",
+    "movie directory": "movies/Stainless Steel",
+    "movie name": "stainless steel.mov"
+  }
+}

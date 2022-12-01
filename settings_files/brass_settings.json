@@ -1,0 +1,11 @@
+  {
+  "plot settings": {
+    "material": "Brass",
+    "stress conversion factor": "22.43",
+    "csv_file_path": "Datasets/brass.csv",
+    "num frames per": "1",
+    "frames directory": "Animation Frames/Brass",
+    "movie directory": "movies/brass Steel",
+    "movie name": "brass.mov"
+  }
+}

@@ -1,0 +1,11 @@
+  {
+  "plot settings": {
+    "material": "Polymer",
+    "stress conversion factor": "10",
+    "csv_file_path": "Datasets/ptfe.csv",
+    "num frames per": "1",
+    "frames directory": "Animation Frames/Polymer",
+    "movie directory": "movies/Polymer",
+    "movie name": "polymer.mov"
+  }
+}

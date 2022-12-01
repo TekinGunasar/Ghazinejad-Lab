@@ -1,0 +1,12 @@
+
+  {
+  "plot settings": {
+    "material": "Aluminum",
+    "stress conversion factor": "26.204564666103128",
+    "csv_file_path": "Datasets/aluminum.csv",
+    "num frames per": "1",
+    "frames directory": "Animation Frames/Aluminum",
+    "movie directory": "movies/aluminum",
+    "movie name": "aluminum.mov"
+  }
+}

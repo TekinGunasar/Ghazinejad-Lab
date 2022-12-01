@@ -1,0 +1,11 @@
+  {
+  "plot settings": {
+    "material": "Low Carbon Steel",
+    "stress conversion factor": "20",
+    "csv_file_path": "Datasets/lowcarbon.csv",
+    "num frames per": "1",
+    "frames directory": "Animation Frames/Low Carbon Steel",
+    "movie directory": "movies/Low Carbon Steel",
+    "movie name": "low carbon steel.mov"
+  }
+}
