@@ -1,0 +1,11 @@
+  {
+  "plot settings": {
+    "material": "High Carbon Steel",
+    "stress conversion factor": "38.8051",
+    "csv_file_path": "Datasets/hcs.csv",
+    "num frames per": "1",
+    "frames directory": "Animation Frames/High Carbon Steel",
+    "movie directory": "movies/High Carbon Steel",
+    "movie name": "hcs.mov"
+  }
+}

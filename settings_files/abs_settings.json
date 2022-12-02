@@ -1,0 +1,11 @@
+  {
+  "plot settings": {
+    "material": "ABS",
+    "stress conversion factor": "36.9931",
+    "csv_file_path": "Datasets/abs.csv",
+    "num frames per": "1",
+    "frames directory": "Animation Frames/ABS",
+    "movie directory": "movies/ABS",
+    "movie name": "abs.mov"
+  }
+}

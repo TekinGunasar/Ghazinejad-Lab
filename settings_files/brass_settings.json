@@ -5,7 +5,7 @@
     "csv_file_path": "Datasets/brass.csv",
     "num frames per": "1",
     "frames directory": "Animation Frames/Brass",
-    "movie directory": "movies/brass Steel",
+    "movie directory": "movies/brass",
     "movie name": "brass.mov"
   }
 }
