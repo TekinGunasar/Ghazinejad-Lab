@@ -91,21 +91,10 @@ def plot_both(data_path,material,uts):
 
 if __name__ == '__main__':
 
-    path_abs = 'Datasets/abs.csv'
-    data = pd.read_csv(path_abs)
+    data_hcs = 'Datasets/brass.csv'
+    uts_abs = 400
 
-    force_data = pd.to_numeric(data['Force'][2::2]).values
-    displacement_data = pd.to_numeric(data['Displacement'][2::2]).values
-    strain_data = pd.to_numeric(data['Tensile strain (Displacement)'][2::2]).values/100
-
-    corrected_data = pd.DataFrame({
-        'Force':force_data,
-        'Displacement':displacement_data,
-        'Strain 1':strain_data
-    })
-
-    corrected_data.to_csv('Datasets/abs.csv')
-
+    print(get_stress_conversion_factor(data_hcs,uts_abs))
 
 
 
