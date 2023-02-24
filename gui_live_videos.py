@@ -31,7 +31,7 @@ class VideoThread(QThread):
    #overriding the 'run' function in default threading module, whenever thread.start() is called, run will be invoked
    def run(self):
       # capture from web cam
-      cap = cv.VideoCapture(0)
+      cap = cv.VideoCapture('live_videos/HCS/HCS Graphic.mp4')
 
       while self._run_flag:
 
@@ -53,6 +53,8 @@ class MainWindow(QMainWindow):
         super(MainWindow,self).__init__()
         self.setWindowTitle('Multimedia Lesson')
 
+        self.showing_video = False
+
         self.main_layout = QHBoxLayout()
 
         self.display_width = 1000
@@ -72,7 +74,7 @@ class MainWindow(QMainWindow):
 
         #Now adding the groupbox as the first element in the video_selection vbox an styling it
         self.video_selection.addWidget(self.tensile_test_groupbox)
-        self.tensile_test_groupbox.setStyleSheet("background-color:rgb(98,178,232); font-size:50px; border: 5px solid black;")
+        self.tensile_test_groupbox.setStyleSheet("background-color:rgb(98,178,232); font-size:100px; border: 5px solid black;")
 
         #Adding the videos that make up the vbox layout of the tensile tests groupbox
         self.tensile_test_v1 = QPushButton('Video 1')
@@ -80,13 +82,15 @@ class MainWindow(QMainWindow):
         self.tensile_test_v1.setStyleSheet('QPushButton {border: 5px solid black; background:rgb(255,255,255);} '
                                            'QPushButton:hover {background:rgb(180,180,180)}')
 
+        self.tensile_test_v1.clicked.connect(self.start_thread)
+
         #Adding video selection section now for the coldworks videos in the same manner
         self.coldworks_groupbox = QGroupBox('Coldworks Videos')
         self.coldworks_vbox = QVBoxLayout()
         self.coldworks_groupbox.setLayout(self.coldworks_vbox)
 
         self.video_selection.addWidget(self.coldworks_groupbox)
-        self.coldworks_groupbox.setStyleSheet("background-color:rgb(98,178,232); font-size:50px; border: 5px solid black;")
+        self.coldworks_groupbox.setStyleSheet("background-color:rgb(98,178,232); font-size:100px; border: 5px solid black;")
 
         #Ading the videos that make up the vbox layout of the coldworks groupbox
         self.coldworks_v1 = QPushButton('Video 1')
@@ -127,16 +131,14 @@ class MainWindow(QMainWindow):
         # Logic for this implemented in 'run' function in VideoThread
         self.thread.change_pixmap_signal.connect(self.update_image)
 
-        # invokes 'run' function in video thread for this instance
-        self.thread.start()
+        #self.thread.start()
 
         self.centralWidget = QWidget()
         self.centralWidget.setLayout(self.main_layout)
         self.setCentralWidget(self.centralWidget)
 
-        def closeEvent(self, event):
-           self.thread.stop()
-           event.accept()
+    def start_thread(self):
+        self.thread.start()
 
     @pyqtSlot(np.ndarray)
     def update_image(self, cv_img):
