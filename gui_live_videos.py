@@ -5,11 +5,7 @@ from PyQt5.QtWidgets import *
 
 import numpy as np
 import cv2 as cv
-
 from time import time
-from queue import Queue
-from threading import Thread
-from functools import partial
 
 class Color(QWidget):
 
@@ -39,12 +35,18 @@ class VideoThread(QThread):
       # capture from web cam
       cap = cv.VideoCapture(self.video_path)
 
+      frameRate = 30
+      prev = 0
+
       while self._run_flag:
          ret, cv_img = cap.read()
          cv_img = cv.resize(cv_img,(self.display_width,self.display_height))
+
          if ret:
             #emitting signal, which is connected to the update_img func. to display the next video frame
-            self.change_pixmap_signal.emit(cv_img)
+            time_elapsed = time() - prev
+            if time_elapsed > 1./frameRate:
+                self.change_pixmap_signal.emit(cv_img)
 
       # shut down capture system
       cap.release()
@@ -60,8 +62,8 @@ class MainWindow(QMainWindow):
         super(MainWindow,self).__init__()
         self.setWindowTitle('Multimedia Lesson')
 
-        self.display_width = 2500
-        self.display_height = 2000
+        self.display_width = 2000
+        self.display_height = 1500
 
         self.showing_video = False
 
@@ -89,7 +91,31 @@ class MainWindow(QMainWindow):
         self.tensile_test_v1.setStyleSheet('QPushButton {border: 5px solid black; background:rgb(255,255,255);} '
                                            'QPushButton:hover {background:rgb(180,180,180)}')
 
+
         self.tensile_test_v1.clicked.connect(self.play_aluminum_video)
+
+        self.tensile_test_v2 = QPushButton('Stainless 316L')
+        self.tensile_test_vbox.addWidget(self.tensile_test_v2)
+        self.tensile_test_v2.setStyleSheet('QPushButton {border: 5px solid black; background:rgb(255,255,255);} '
+                                           'QPushButton:hover {background:rgb(180,180,180)}')
+
+        self.tensile_test_v2.clicked.connect(self.play_stainless_video)
+
+
+        self.tensile_test_v3 = QPushButton('Steel 1084')
+        self.tensile_test_vbox.addWidget(self.tensile_test_v3)
+        self.tensile_test_v3.setStyleSheet('QPushButton {border: 5px solid black; background:rgb(255,255,255);} '
+                                           'QPushButton:hover {background:rgb(180,180,180)}')
+
+        self.tensile_test_v3.clicked.connect(self.play_steel_video)
+
+
+        self.tensile_test_v4 = QPushButton('PLA')
+        self.tensile_test_vbox.addWidget(self.tensile_test_v4)
+        self.tensile_test_v4.setStyleSheet('QPushButton {border: 5px solid black; background:rgb(255,255,255);} '
+                                           'QPushButton:hover {background:rgb(180,180,180)}')
+
+        self.tensile_test_v4.clicked.connect(self.play_steel_video)
 
         #Adding video selection section now for the coldworks videos in the same manner
         self.coldworks_groupbox = QGroupBox('Hardness Test')
@@ -100,10 +126,12 @@ class MainWindow(QMainWindow):
         self.coldworks_groupbox.setStyleSheet("background-color:rgb(98,178,232); font-size:100px; border: 5px solid black;")
 
         #Ading the videos that make up the vbox layout of the coldworks groupbox
-        self.coldworks_v1 = QPushButton('Video 1')
+        self.coldworks_v1 = QPushButton('???')
         self.coldworks_vbox.addWidget(self.coldworks_v1)
         self.coldworks_v1.setStyleSheet('QPushButton {border: 5px solid black; background:rgb(255,255,255);} '
                                            'QPushButton:hover {background:rgb(180,180,180)}')
+
+        self.coldworks_v1.clicked.connect(self.play_cw_video)
 
         #Video player section
         self.video_player = QVBoxLayout()
@@ -118,6 +146,7 @@ class MainWindow(QMainWindow):
         self.video_player.addWidget(self.video_player_groupbox)
 
         self.image_label = QLabel(self)
+        self.image_label.setAlignment(Qt.AlignCenter)
 
         self.video_player_groupbox_vbox.addWidget(self.image_label)
 
@@ -151,11 +180,28 @@ class MainWindow(QMainWindow):
         self.thread.video_path = 'live_videos/Aluminum 6061.mp4'
         self.start_thread()
 
+    def play_stainless_video(self):
+        self.thread.video_path = 'live_videos/Stainless 316L.mp4'
+        self.start_thread()
+
+    def play_steel_video(self):
+        self.thread.video_path = 'live_videos/Steel 1084.mp4'
+        self.start_thread()
+
+    def play_pla_video(self):
+        self.thread.video_path = 'live_videos/PLA.mp4'
+        self.start_thread()
+
+    def play_cw_video(self):
+        self.thread.video_path = 'live_videos/IMG_7960.MOV'
+        self.start_thread()
+
     @pyqtSlot(np.ndarray)
     def update_image(self, cv_img):
        """Updates the image_label with a new opencv image"""
        qt_img = self.convert_cv_qt(cv_img)
        self.image_label.setPixmap(qt_img)
+
 
     def convert_cv_qt(self, cv_img):
        """Convert from an opencv image to QPixmap"""
@@ -163,7 +209,7 @@ class MainWindow(QMainWindow):
        h, w, ch = rgb_image.shape
        bytes_per_line = ch * w
        convert_to_Qt_format = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
-       #p = convert_to_Qt_format.scaled(self.display_width,self.display_height,aspectRatioMode=Qt.IgnoreAspectRatio)
+       #p = convert_to_Qt_format.scaled(self.display_width,self.display_height,aspectRatioMode=Qt.KeepAspectRatio)
        return QPixmap.fromImage(convert_to_Qt_format)
 
 def main():
